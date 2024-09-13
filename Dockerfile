@@ -1,29 +1,23 @@
-# Descargar la imagen de ubuntu
+# Descargar la imagen de Docker
 FROM ubuntu:22.04
 
-# Actualizar la lista de actualizaciones
-RUN apt-get update
-
 # Actualizar la imagen
-RUN apt-get upgrade -y 
+RUN apt-get update && apt-get upgrade -y
 
-# Instalar las herramientas
-RUN apt-get install python3 -y
+# Instalar herramientas necesarias
+RUN apt-get install -y python3 python3-pip
 
-# Copiar la carpeta webapp
-COPY ./webapp /home/webapp
+# Copiar la carpeta
+COPY ./webapp /home/app
 
-# Establecer el directorio de trabajo
-WORKDIR /home/webapp
+# Establecer directorio de trabajo
+WORKDIR /home/app
 
-# Instalar pip 
-RUN apt-get install python3-pip -y
-
-# Instalar las librerías
-RUN pip install -r requirements.txt
+# Instalar librerías Python
+RUN pip3 install -r requirements.txt
 
 # Abrir el puerto 8080
 EXPOSE 8080
 
-# Ejecutar la aplicación web
+# Ejecutar la aplicación
 CMD [ "python3", "app.py" ]
